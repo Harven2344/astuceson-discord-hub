@@ -7,17 +7,37 @@ import { Label } from "@/components/ui/label";
 import { Mail, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useSiteSettings } from "@/contexts/SiteSettings";
 
 export default function Contact() {
   const [sending, setSending] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const { settings } = useSiteSettings();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: { name, email, message },
+      });
+
+      if (error) throw error;
+
       toast.success("Message envoyé ! Nous te répondrons rapidement.");
-    }, 1000);
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      console.error("Error:", err);
+      toast.error("Erreur lors de l'envoi. Réessaie plus tard.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -49,15 +69,15 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="name">Nom</Label>
-                <Input id="name" placeholder="Ton nom" required className="bg-background" />
+                <Input id="name" placeholder="Ton nom" required className="bg-background" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="ton@email.com" required className="bg-background" />
+                <Input id="email" type="email" placeholder="ton@email.com" required className="bg-background" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Dis-moi tout..." rows={6} required className="bg-background" />
+                <Textarea id="message" placeholder="Dis-moi tout..." rows={6} required className="bg-background" value={message} onChange={(e) => setMessage(e.target.value)} />
               </div>
               <Button type="submit" disabled={sending} className="w-full bg-accent text-accent-foreground hover:bg-accent/80 font-display font-bold">
                 {sending ? "Envoi en cours..." : "Envoyer le message"}
@@ -66,14 +86,14 @@ export default function Contact() {
           </motion.div>
 
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <a href="#" className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 hover:border-accent/50 transition-colors">
+            <a href={settings.discordLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 hover:border-accent/50 transition-colors">
               <MessageCircle className="h-6 w-6 text-discord" />
               <div>
                 <div className="font-display font-semibold text-sm">Discord</div>
                 <div className="text-xs text-muted-foreground">Rejoins le serveur</div>
               </div>
             </a>
-            <a href="#" className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 hover:border-accent/50 transition-colors">
+            <a href="mailto:contact.astuceson@gmail.com" className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-4 hover:border-accent/50 transition-colors">
               <Mail className="h-6 w-6 text-neon-pink" />
               <div>
                 <div className="font-display font-semibold text-sm">Email</div>
