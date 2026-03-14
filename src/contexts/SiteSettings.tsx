@@ -29,7 +29,7 @@ const defaults: SiteSettings = {
   snapchatLink: "#",
   siteName: "Astuceson",
   siteDescription: "TikTokeur passionné partageant les meilleures astuces. Rejoins la communauté Discord !",
-  contactEmail: "contact@astuceson.fr",
+  contactEmail: "contact.astuceson@gmail.com",
   heroTitle: "Bienvenue chez Astuceson",
   heroSubtitle: "TikTokeur passionné, je partage les meilleures astuces du web. Rejoins ma communauté Discord pour ne rien rater !",
   statsMembers: "10K+",

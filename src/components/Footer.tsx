@@ -37,6 +37,7 @@ export default function Footer() {
         </div>
         <div className="mt-10 border-t border-border/50 pt-6 text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} {settings.siteName}. Tous droits réservés.
+          <div className="mt-2">contact.astuceson@gmail.com</div>
         </div>
       </div>
     </footer>
