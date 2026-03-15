@@ -24,7 +24,7 @@ export default function Index() {
   const stats = [
     { label: "Membres", value: settings.statsMembers, icon: Users },
     { label: "Vidéos TikTok", value: settings.statsVideos, icon: TrendingUp },
-    { label: "Astuces partagées", value: settings.statsAstuces, icon: Zap },
+    { label: "Contenus partagés", value: settings.statsAstuces, icon: Zap },
   ];
 
   return (
