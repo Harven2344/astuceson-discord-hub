@@ -5,12 +5,12 @@ import Layout from "@/components/Layout";
 import { useSiteSettings } from "@/contexts/SiteSettings";
 
 const features = [
-  { icon: Zap, title: "Astuces Exclusives", desc: "Des astuces que tu ne trouveras nulle part ailleurs, directement depuis mes recherches." },
-  { icon: Users, title: "Communauté Active", desc: "Échange avec des milliers de membres passionnés et partage tes propres découvertes." },
+  { icon: Zap, title: "Contenu Exclusif", desc: "Des vidéos TikTok que tu ne trouveras nulle part ailleurs, du contenu original et authentique." },
+  { icon: Users, title: "Communauté Active", desc: "Échange avec des milliers de membres passionnés sur Discord et les réseaux." },
   { icon: Calendar, title: "Événements Réguliers", desc: "Giveaways, quiz, et événements communautaires chaque semaine." },
-  { icon: MessageCircle, title: "Support Direct", desc: "Pose tes questions et obtiens des réponses rapides de la communauté." },
-  { icon: Star, title: "Contenu Premium", desc: "Accède à des astuces avancées et du contenu réservé aux membres." },
-  { icon: TrendingUp, title: "Toujours à Jour", desc: "Les dernières tendances et astuces dès leur découverte." },
+  { icon: MessageCircle, title: "Échange Direct", desc: "Pose tes questions et échange directement avec la communauté et moi." },
+  { icon: Star, title: "Contenu Avant-Première", desc: "Accède à du contenu exclusif réservé aux membres de la communauté." },
+  { icon: TrendingUp, title: "Toujours à Jour", desc: "Les dernières tendances et nouveautés dès leur sortie." },
 ];
 
 const fadeUp = {
@@ -24,7 +24,7 @@ export default function Index() {
   const stats = [
     { label: "Membres", value: settings.statsMembers, icon: Users },
     { label: "Vidéos TikTok", value: settings.statsVideos, icon: TrendingUp },
-    { label: "Astuces partagées", value: settings.statsAstuces, icon: Zap },
+    { label: "Contenus partagés", value: settings.statsAstuces, icon: Zap },
   ];
 
   return (
