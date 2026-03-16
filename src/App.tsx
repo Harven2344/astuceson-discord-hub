@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, ScrollRestoration } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +15,9 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import Boutique from "./pages/Boutique";
+import Gallery from "./pages/Gallery";
+import Events from "./pages/Events";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,9 @@ const App = () => (
             <Route path="/partenariats" element={<Partnerships />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/boutique" element={<Boutique />} />
+            <Route path="/galerie" element={<Gallery />} />
+            <Route path="/evenements" element={<Events />} />
             <Route path="/conditions" element={<Terms />} />
             <Route path="/confidentialite" element={<Privacy />} />
             <Route path="/contact" element={<Contact />} />

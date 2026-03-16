@@ -14,7 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blog_posts: {
+        Row: {
+          content: string
+          created_at: string
+          emoji: string
+          excerpt: string
+          id: string
+          published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          emoji?: string
+          excerpt?: string
+          id?: string
+          published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          emoji?: string
+          excerpt?: string
+          id?: string
+          published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          event_date: string
+          event_type: string
+          id: string
+          location: string
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          event_date?: string
+          event_type?: string
+          id?: string
+          location?: string
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          event_date?: string
+          event_type?: string
+          id?: string
+          location?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      faq_items: {
+        Row: {
+          active: boolean
+          answer: string
+          created_at: string
+          id: string
+          question: string
+          sort_order: number
+        }
+        Insert: {
+          active?: boolean
+          answer: string
+          created_at?: string
+          id?: string
+          question: string
+          sort_order?: number
+        }
+        Update: {
+          active?: boolean
+          answer?: string
+          created_at?: string
+          id?: string
+          question?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      partnerships: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          id: string
+          logo_url: string
+          name: string
+          website_url: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          logo_url?: string
+          name: string
+          website_url?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          logo_url?: string
+          name?: string
+          website_url?: string
+        }
+        Relationships: []
+      }
+      portfolio_items: {
+        Row: {
+          created_at: string
+          description: string
+          featured: boolean
+          id: string
+          platform: string
+          thumbnail_url: string
+          title: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          platform?: string
+          thumbnail_url?: string
+          title: string
+          video_url?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          platform?: string
+          thumbnail_url?: string
+          title?: string
+          video_url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
