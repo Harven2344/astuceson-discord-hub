@@ -47,6 +47,54 @@ export type Database = {
         }
         Relationships: []
       }
+      boutique_items: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string
+          emoji: string
+          featured: boolean
+          id: string
+          image_url: string
+          link_url: string
+          name: string
+          price: string
+          sort_order: number
+          status: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          emoji?: string
+          featured?: boolean
+          id?: string
+          image_url?: string
+          link_url?: string
+          name: string
+          price?: string
+          sort_order?: number
+          status?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          emoji?: string
+          featured?: boolean
+          id?: string
+          image_url?: string
+          link_url?: string
+          name?: string
+          price?: string
+          sort_order?: number
+          status?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           active: boolean
