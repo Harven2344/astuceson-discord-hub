@@ -12,13 +12,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import {
   Settings, Link2, Globe, BarChart3, Bell, Shield, LogOut,
-  Save, Eye, EyeOff, Lock, FileText, HelpCircle, Film, CalendarDays, Handshake
+  Save, Eye, EyeOff, Lock, FileText, HelpCircle, Film, CalendarDays, Handshake, ShoppingBag
 } from "lucide-react";
 import AdminBlog from "@/components/admin/AdminBlog";
 import AdminFAQ from "@/components/admin/AdminFAQ";
 import AdminPortfolio from "@/components/admin/AdminPortfolio";
 import AdminEvents from "@/components/admin/AdminEvents";
 import AdminPartnerships from "@/components/admin/AdminPartnerships";
+import AdminBoutique from "@/components/admin/AdminBoutique";
 
 function LoginForm() {
   const [pass, setPass] = useState("");
@@ -97,6 +98,7 @@ function AdminDashboard() {
           <Tabs defaultValue="blog" className="space-y-6">
             <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1">
               <TabsTrigger value="blog" className="gap-1.5 text-xs"><FileText className="h-3.5 w-3.5" /> Blog</TabsTrigger>
+              <TabsTrigger value="boutique" className="gap-1.5 text-xs"><ShoppingBag className="h-3.5 w-3.5" /> Boutique</TabsTrigger>
               <TabsTrigger value="faq" className="gap-1.5 text-xs"><HelpCircle className="h-3.5 w-3.5" /> FAQ</TabsTrigger>
               <TabsTrigger value="portfolio" className="gap-1.5 text-xs"><Film className="h-3.5 w-3.5" /> Portfolio</TabsTrigger>
               <TabsTrigger value="events" className="gap-1.5 text-xs"><CalendarDays className="h-3.5 w-3.5" /> Événements</TabsTrigger>
@@ -109,12 +111,12 @@ function AdminDashboard() {
             </TabsList>
 
             <TabsContent value="blog"><AdminBlog /></TabsContent>
+            <TabsContent value="boutique"><AdminBoutique /></TabsContent>
             <TabsContent value="faq"><AdminFAQ /></TabsContent>
             <TabsContent value="portfolio"><AdminPortfolio /></TabsContent>
             <TabsContent value="events"><AdminEvents /></TabsContent>
             <TabsContent value="partners"><AdminPartnerships /></TabsContent>
 
-            {/* LIENS */}
             <TabsContent value="links">
               <Card className="border-border/50 bg-card">
                 <CardHeader>
@@ -137,7 +139,6 @@ function AdminDashboard() {
               </Card>
             </TabsContent>
 
-            {/* GÉNÉRAL */}
             <TabsContent value="general">
               <Card className="border-border/50 bg-card">
                 <CardHeader>
@@ -160,7 +161,6 @@ function AdminDashboard() {
               </Card>
             </TabsContent>
 
-            {/* STATS */}
             <TabsContent value="stats">
               <Card className="border-border/50 bg-card">
                 <CardHeader>
@@ -177,7 +177,6 @@ function AdminDashboard() {
               </Card>
             </TabsContent>
 
-            {/* ANNONCES */}
             <TabsContent value="announce">
               <Card className="border-border/50 bg-card">
                 <CardHeader>
@@ -197,7 +196,6 @@ function AdminDashboard() {
               </Card>
             </TabsContent>
 
-            {/* SÉCURITÉ */}
             <TabsContent value="security">
               <Card className="border-border/50 bg-card">
                 <CardHeader>

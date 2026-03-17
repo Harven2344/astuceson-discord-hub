@@ -1,57 +1,80 @@
 import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const faqs = [
-  { q: "Comment rejoindre le serveur Discord ?", a: "C'est très simple ! Clique sur le bouton « Rejoindre le Discord » présent sur le site. Tu seras redirigé vers Discord où tu pourras accepter l'invitation. Assure-toi d'avoir un compte Discord actif." },
-  { q: "Le serveur est-il gratuit ?", a: "Oui, le serveur Discord Astuceson est 100% gratuit ! Tu peux accéder à toutes les astuces, participer aux discussions et aux événements sans rien payer." },
-  { q: "Quelles sont les règles du serveur ?", a: "Les règles principales sont : respect mutuel, pas de spam, pas de contenu inapproprié, pas de pub sans autorisation, et être bienveillant envers tous les membres. Les règles complètes sont affichées dans le salon #règles du serveur." },
-  { q: "Comment obtenir des rôles spéciaux ?", a: "Les rôles sont attribués en fonction de ton activité sur le serveur. Plus tu participes aux discussions et événements, plus tu débloques de rôles. Certains rôles spéciaux sont disponibles lors d'événements exclusifs." },
-  { q: "À quelle fréquence publies-tu sur TikTok ?", a: "Je publie en moyenne 1 à 3 vidéos par jour sur TikTok. Les horaires varient mais je suis le plus actif entre 18h et 22h. Active les notifications pour ne rien rater !" },
-  { q: "Comment proposer une astuce ?", a: "Tu peux proposer tes astuces dans le salon #suggestions du serveur Discord. Si ton astuce est sélectionnée, elle pourra être présentée dans une de mes vidéos TikTok et tu seras crédité !" },
-  { q: "Comment devenir modérateur ?", a: "Les modérateurs sont sélectionnés parmi les membres les plus actifs et les plus bienveillants. Il n'y a pas de candidature formelle : sois simplement toi-même, aide les autres et on te remarquera !" },
-  { q: "Y a-t-il des événements réguliers ?", a: "Oui ! Nous organisons des giveaways chaque semaine, des quiz mensuels, des sessions de partage d'astuces en live, et des événements spéciaux lors des fêtes et occasions." },
+interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+const defaultFaqs: FAQItem[] = [
+  { id: "1", question: "Comment rejoindre le serveur Discord ?", answer: "Clique sur le bouton « Rejoindre le Discord » et accepte l'invitation. Tu auras besoin d'un compte Discord." },
+  { id: "2", question: "Le serveur est-il gratuit ?", answer: "Oui, 100% gratuit ! Accède aux discussions, événements et contenu sans rien payer." },
+  { id: "3", question: "Quelles sont les règles ?", answer: "Respect, pas de spam, pas de contenu inapproprié. Les règles complètes sont dans le salon #règles." },
+  { id: "4", question: "Comment obtenir des rôles spéciaux ?", answer: "Les rôles sont attribués selon ton activité. Plus tu participes, plus tu débloques de rôles." },
+  { id: "5", question: "À quelle fréquence publies-tu ?", answer: "1 à 3 vidéos par jour sur TikTok, surtout entre 18h et 22h." },
+  { id: "6", question: "Y a-t-il des événements réguliers ?", answer: "Oui ! Giveaways chaque semaine, quiz mensuels et sessions live." },
 ];
 
 export default function FAQ() {
+  const [faqs, setFaqs] = useState<FAQItem[]>(defaultFaqs);
+
+  useEffect(() => {
+    supabase.from("faq_items").select("id, question, answer").eq("active", true).order("sort_order", { ascending: true }).then(({ data }) => {
+      if (data && data.length > 0) setFaqs(data);
+    });
+  }, []);
+
   return (
     <Layout>
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <section className="relative overflow-hidden py-28 md:py-36">
+        <div className="absolute inset-0 bg-grid opacity-10" />
+        <div className="absolute top-20 left-10 w-80 h-80 bg-neon-cyan/10 rounded-full blur-[100px] animate-blob" />
+        <div className="container mx-auto px-4 relative">
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-display text-4xl md:text-5xl font-bold mb-4 text-center"
+            transition={{ duration: 0.7 }}
+            className="font-display text-6xl md:text-8xl font-black mb-4 leading-[0.9]"
           >
             <span className="text-gradient">FAQ</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-muted-foreground text-center mb-12"
+            transition={{ delay: 0.3 }}
+            className="text-lg text-muted-foreground max-w-md"
           >
-            Questions fréquemment posées sur le serveur et la communauté.
+            Questions fréquemment posées.
           </motion.p>
+        </div>
+      </section>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="rounded-xl border border-border/50 bg-card px-6 data-[state=open]:border-accent/50">
-                  <AccordionTrigger className="font-display font-semibold hover:no-underline">
-                    {f.q}
+      <section className="pb-24">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <Accordion type="single" collapsible className="space-y-3">
+            {faqs.map((f, i) => (
+              <motion.div
+                key={f.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+              >
+                <AccordionItem value={`item-${f.id}`} className="rounded-2xl border border-border/50 bg-card px-6 data-[state=open]:border-accent/50 transition-all">
+                  <AccordionTrigger className="font-display font-semibold hover:no-underline text-left">
+                    {f.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">
-                    {f.a}
+                    {f.answer}
                   </AccordionContent>
                 </AccordionItem>
-              ))}
-            </Accordion>
-          </motion.div>
+              </motion.div>
+            ))}
+          </Accordion>
         </div>
       </section>
     </Layout>

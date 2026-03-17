@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const ADMIN_PASS = "astuceson2024";
-const ALLOWED_TABLES = ["blog_posts", "faq_items", "portfolio_items", "events", "partnerships"];
+const ALLOWED_TABLES = ["blog_posts", "faq_items", "portfolio_items", "events", "partnerships", "boutique_items"];
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
