@@ -34,7 +34,6 @@ export default function Footer() {
             <h4 className="font-display font-bold mb-4 text-foreground text-sm uppercase tracking-wider">Découvrir</h4>
             <div className="flex flex-col gap-2.5">
               {[
-                { to: "/boutique", label: "Boutique" },
                 { to: "/galerie", label: "Galerie" },
                 { to: "/evenements", label: "Événements" },
                 { to: "/partenariats", label: "Partenariats" },

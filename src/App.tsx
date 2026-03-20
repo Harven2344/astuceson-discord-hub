@@ -15,7 +15,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
-import Boutique from "./pages/Boutique";
+// Boutique removed
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
 import NotFound from "./pages/NotFound";
@@ -37,7 +37,7 @@ const App = () => (
             <Route path="/partenariats" element={<Partnerships />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/boutique" element={<Boutique />} />
+            {/* Boutique removed */}
             <Route path="/galerie" element={<Gallery />} />
             <Route path="/evenements" element={<Events />} />
             <Route path="/conditions" element={<Terms />} />
