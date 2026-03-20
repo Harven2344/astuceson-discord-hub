@@ -134,7 +134,7 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* MARQUEE TICKER */}
+      {settings.showMarquee && (
       <section className="py-6 border-y border-border/30 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10 pointer-events-none" />
         <div className="marquee">
@@ -147,6 +147,7 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
       {/* STATS — Bento grid */}
       <section className="py-20 relative">
