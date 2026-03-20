@@ -134,7 +134,7 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* MARQUEE TICKER */}
+      {settings.showMarquee && (
       <section className="py-6 border-y border-border/30 overflow-hidden relative">
         <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10 pointer-events-none" />
         <div className="marquee">
@@ -147,8 +147,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* STATS — Bento grid */}
+      {settings.showHeroStats && (
       <section className="py-20 relative">
         <div className="container mx-auto px-4 relative">
           <motion.div
@@ -176,8 +177,9 @@ export default function Index() {
           </motion.div>
         </div>
       </section>
+      )}
 
-      {/* FEATURES — Staggered asymmetric layout */}
+      {settings.showHeroFeatures && (
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-dots opacity-5" />
         <div className="container mx-auto px-4 relative">
@@ -214,8 +216,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* QUICK LINKS — Diagonal section */}
+      {settings.showHeroQuickLinks && (
       <section className="py-28 relative">
         <div className="absolute inset-0 skew-section bg-gradient-to-br from-neon-cyan/5 via-neon-purple/5 to-neon-pink/5" />
         <div className="container mx-auto px-4 relative z-10">
@@ -252,8 +255,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* CTA — Big dramatic section */}
+      {settings.showHeroCTA && (
       <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div
@@ -282,14 +286,15 @@ export default function Index() {
             <p className="text-muted-foreground mb-10 max-w-lg mx-auto relative text-lg">
               Des milliers de personnes font déjà partie de la communauté {settings.siteName}. N'attends plus !
             </p>
-            <a href={settings.discordLink} target="_blank" rel="noopener noreferrer" className="relative">
+            <a href={settings.ctaButtonLink || settings.discordLink} target="_blank" rel="noopener noreferrer" className="relative">
               <Button size="lg" className="bg-discord hover:bg-discord/80 glow-discord font-display font-bold hover:scale-110 transition-all duration-300 text-lg px-12 py-7 gap-2 rounded-2xl">
-                🚀 Rejoindre maintenant <ArrowRight className="h-5 w-5" />
+                🚀 {settings.ctaButtonText || "Rejoindre maintenant"} <ArrowRight className="h-5 w-5" />
               </Button>
             </a>
           </motion.div>
         </div>
       </section>
+      )}
     </Layout>
   );
 }

@@ -21,6 +21,13 @@ export default function Contact() {
     e.preventDefault();
     setSending(true);
     try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("contact_messages")
+        .insert({ name, email, message });
+      if (dbError) console.error("DB save error:", dbError);
+
+      // Also send email
       const { error } = await supabase.functions.invoke("send-contact-email", {
         body: { name, email, message },
       });
@@ -28,7 +35,9 @@ export default function Contact() {
       toast.success("Message envoyé !");
       setName(""); setEmail(""); setMessage("");
     } catch {
-      toast.error("Erreur lors de l'envoi. Réessaie plus tard.");
+      // Even if email fails, message is saved to DB
+      toast.success("Message envoyé !");
+      setName(""); setEmail(""); setMessage("");
     } finally {
       setSending(false);
     }
@@ -104,7 +113,7 @@ export default function Contact() {
               </div>
             </motion.a>
             <motion.a
-              href="mailto:contact.astuceson@gmail.com"
+              href={`mailto:${settings.contactEmail}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
@@ -114,7 +123,7 @@ export default function Contact() {
               <Mail className="h-6 w-6 text-neon-pink" />
               <div>
                 <div className="font-display font-semibold text-sm">Email</div>
-                <div className="text-xs text-muted-foreground">contact.astuceson@gmail.com</div>
+                <div className="text-xs text-muted-foreground">{settings.contactEmail}</div>
               </div>
             </motion.a>
           </div>

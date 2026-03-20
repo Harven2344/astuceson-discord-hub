@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
 import { useSiteSettings } from "@/contexts/SiteSettings";
@@ -9,17 +9,23 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Settings, Link2, Globe, BarChart3, Bell, Shield, LogOut,
   Save, Eye, EyeOff, Lock, FileText, HelpCircle, Film, CalendarDays, Handshake,
   LayoutDashboard, Palette, AlertTriangle, ChevronRight, Activity, Users, TrendingUp, Zap,
-  Monitor, Smartphone, Moon, Sun, Type, Image, ExternalLink, Mail, Hash
+  Monitor, Smartphone, Moon, Sun, Type, Image, ExternalLink, Mail, Hash,
+  Search, MessageSquare, Home, Inbox, Star, Trash2, RefreshCw, Copy, Check, Download,
+  Wrench, Database, Code, ArrowRight
 } from "lucide-react";
 import AdminBlog from "@/components/admin/AdminBlog";
 import AdminFAQ from "@/components/admin/AdminFAQ";
 import AdminPortfolio from "@/components/admin/AdminPortfolio";
 import AdminEvents from "@/components/admin/AdminEvents";
 import AdminPartnerships from "@/components/admin/AdminPartnerships";
+import AdminMessages from "@/components/admin/AdminMessages";
+import AdminSEO from "@/components/admin/AdminSEO";
+import AdminHomepage from "@/components/admin/AdminHomepage";
 
 function LoginForm() {
   const [pass, setPass] = useState("");
@@ -89,24 +95,29 @@ function SettingsField({ label, value, onChange, type = "text", placeholder = ""
   );
 }
 
-type AdminSection = "dashboard" | "blog" | "faq" | "portfolio" | "events" | "partners" | "links" | "general" | "stats" | "announce" | "appearance" | "security";
+type AdminSection = "dashboard" | "blog" | "faq" | "portfolio" | "events" | "partners" | "messages" | "links" | "general" | "homepage" | "seo" | "stats" | "announce" | "appearance" | "security" | "footer" | "tools";
 
 const sidebarSections: { id: AdminSection; label: string; icon: any; color: string; group: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-neon-cyan", group: "Vue d'ensemble" },
+  { id: "messages", label: "Messages", icon: MessageSquare, color: "text-neon-yellow", group: "Vue d'ensemble" },
   { id: "blog", label: "Blog", icon: FileText, color: "text-neon-pink", group: "Contenu" },
   { id: "faq", label: "FAQ", icon: HelpCircle, color: "text-neon-cyan", group: "Contenu" },
   { id: "portfolio", label: "Portfolio", icon: Film, color: "text-neon-purple", group: "Contenu" },
   { id: "events", label: "Événements", icon: CalendarDays, color: "text-neon-green", group: "Contenu" },
   { id: "partners", label: "Partenaires", icon: Handshake, color: "text-neon-orange", group: "Contenu" },
+  { id: "homepage", label: "Page d'accueil", icon: Home, color: "text-neon-pink", group: "Configuration" },
   { id: "links", label: "Réseaux sociaux", icon: Link2, color: "text-neon-pink", group: "Configuration" },
   { id: "general", label: "Général", icon: Globe, color: "text-neon-cyan", group: "Configuration" },
+  { id: "seo", label: "SEO", icon: Search, color: "text-neon-green", group: "Configuration" },
   { id: "stats", label: "Statistiques", icon: BarChart3, color: "text-neon-green", group: "Configuration" },
   { id: "announce", label: "Annonces", icon: Bell, color: "text-neon-yellow", group: "Configuration" },
+  { id: "footer", label: "Pied de page", icon: Code, color: "text-neon-orange", group: "Configuration" },
   { id: "appearance", label: "Apparence", icon: Palette, color: "text-neon-purple", group: "Système" },
   { id: "security", label: "Sécurité", icon: Shield, color: "text-neon-orange", group: "Système" },
+  { id: "tools", label: "Outils", icon: Wrench, color: "text-neon-cyan", group: "Système" },
 ];
 
-function AdminDashboard() {
+function AdminPanel() {
   const { settings, updateSettings, logout } = useSiteSettings();
   const [activeSection, setActiveSection] = useState<AdminSection>("dashboard");
   const [showPass, setShowPass] = useState(false);
@@ -215,11 +226,14 @@ function AdminDashboard() {
               transition={{ duration: 0.2 }}
             >
               {activeSection === "dashboard" && <DashboardOverview settings={settings} onNavigate={setActiveSection} />}
+              {activeSection === "messages" && <AdminMessages />}
               {activeSection === "blog" && <AdminBlog />}
               {activeSection === "faq" && <AdminFAQ />}
               {activeSection === "portfolio" && <AdminPortfolio />}
               {activeSection === "events" && <AdminEvents />}
               {activeSection === "partners" && <AdminPartnerships />}
+              {activeSection === "homepage" && <AdminHomepage />}
+              {activeSection === "seo" && <AdminSEO />}
 
               {activeSection === "links" && (
                 <div className="space-y-6">
@@ -236,11 +250,13 @@ function AdminDashboard() {
                         <SettingsField label="Lien d'invitation" value={settings.discordLink} onChange={(v) => updateSettings({ discordLink: v })} placeholder="https://discord.gg/..." icon={ExternalLink} />
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <SettingsField label="TikTok" value={settings.tiktokLink} onChange={(v) => updateSettings({ tiktokLink: v })} placeholder="https://tiktok.com/@..." icon={Hash} />
-                        <SettingsField label="Instagram" value={settings.instagramLink} onChange={(v) => updateSettings({ instagramLink: v })} placeholder="https://instagram.com/..." icon={Image} />
-                        <SettingsField label="YouTube" value={settings.youtubeLink} onChange={(v) => updateSettings({ youtubeLink: v })} placeholder="https://youtube.com/..." icon={Film} />
-                        <SettingsField label="Twitter / X" value={settings.twitterLink} onChange={(v) => updateSettings({ twitterLink: v })} placeholder="https://x.com/..." icon={ExternalLink} />
-                        <SettingsField label="Snapchat" value={settings.snapchatLink} onChange={(v) => updateSettings({ snapchatLink: v })} placeholder="https://snapchat.com/..." icon={ExternalLink} />
+                        <SettingsField label="🎵 TikTok" value={settings.tiktokLink} onChange={(v) => updateSettings({ tiktokLink: v })} placeholder="https://tiktok.com/@..." icon={Hash} />
+                        <SettingsField label="📸 Instagram" value={settings.instagramLink} onChange={(v) => updateSettings({ instagramLink: v })} placeholder="https://instagram.com/..." icon={Image} />
+                        <SettingsField label="🎬 YouTube" value={settings.youtubeLink} onChange={(v) => updateSettings({ youtubeLink: v })} placeholder="https://youtube.com/..." icon={Film} />
+                        <SettingsField label="🐦 Twitter / X" value={settings.twitterLink} onChange={(v) => updateSettings({ twitterLink: v })} placeholder="https://x.com/..." icon={ExternalLink} />
+                        <SettingsField label="👻 Snapchat" value={settings.snapchatLink} onChange={(v) => updateSettings({ snapchatLink: v })} placeholder="https://snapchat.com/..." icon={ExternalLink} />
+                        <SettingsField label="🟣 Twitch" value={settings.twitchLink} onChange={(v) => updateSettings({ twitchLink: v })} placeholder="https://twitch.tv/..." icon={ExternalLink} />
+                        <SettingsField label="🧵 Threads" value={settings.threadsLink} onChange={(v) => updateSettings({ threadsLink: v })} placeholder="https://threads.net/@..." icon={ExternalLink} />
                       </div>
                       <Button onClick={save} className="bg-gradient-to-r from-neon-pink to-neon-purple hover:opacity-90 gap-2 rounded-xl"><Save className="h-4 w-4" /> Sauvegarder</Button>
                     </CardContent>
@@ -351,6 +367,39 @@ function AdminDashboard() {
                 </div>
               )}
 
+              {activeSection === "footer" && (
+                <div className="space-y-6">
+                  <Card className="border-border/30 bg-card/80">
+                    <CardHeader>
+                      <CardTitle className="font-display flex items-center gap-2"><Code className="h-5 w-5 text-neon-orange" /> Pied de page</CardTitle>
+                      <CardDescription>Personnalise le footer du site</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      <div className="space-y-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Texte personnalisé (optionnel)</Label>
+                        <Textarea
+                          value={settings.footerText}
+                          onChange={(e) => updateSettings({ footerText: e.target.value })}
+                          rows={2}
+                          placeholder="Texte supplémentaire pour le footer..."
+                          className="resize-none"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Copyright personnalisé (optionnel)</Label>
+                        <Input
+                          value={settings.footerCopyright}
+                          onChange={(e) => updateSettings({ footerCopyright: e.target.value })}
+                          placeholder="© 2026 Astuceson. Tous droits réservés."
+                        />
+                        <p className="text-[10px] text-muted-foreground">Laisse vide pour le copyright par défaut</p>
+                      </div>
+                      <Button onClick={save} className="bg-gradient-to-r from-neon-orange to-neon-yellow hover:opacity-90 gap-2 rounded-xl text-background"><Save className="h-4 w-4" /> Sauvegarder</Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
               {activeSection === "appearance" && (
                 <div className="space-y-6">
                   <Card className="border-border/30 bg-card/80">
@@ -415,7 +464,6 @@ function AdminDashboard() {
                       <CardDescription>Gère la sécurité et l'accès au site</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                      {/* Maintenance mode */}
                       <div className={`p-5 rounded-xl border transition-all duration-300 ${settings.maintenanceMode ? "bg-destructive/5 border-destructive/30" : "bg-muted/20 border-border/30"}`}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -440,7 +488,6 @@ function AdminDashboard() {
                         )}
                       </div>
 
-                      {/* Password */}
                       <div className="p-5 rounded-xl bg-muted/20 border border-border/30">
                         <h3 className="font-display font-bold text-sm mb-3 flex items-center gap-2">
                           <Lock className="h-4 w-4 text-neon-orange" /> Mot de passe admin
@@ -454,7 +501,6 @@ function AdminDashboard() {
                         <p className="text-[11px] text-muted-foreground mt-2">Ce mot de passe protège l'accès au panneau admin.</p>
                       </div>
 
-                      {/* Session info */}
                       <div className="p-5 rounded-xl bg-neon-green/5 border border-neon-green/20">
                         <h3 className="font-display font-bold text-sm mb-2 flex items-center gap-2 text-neon-green">
                           <Activity className="h-4 w-4" /> Session active
@@ -465,6 +511,8 @@ function AdminDashboard() {
                   </Card>
                 </div>
               )}
+
+              {activeSection === "tools" && <AdminTools />}
             </motion.div>
           </AnimatePresence>
         </main>
@@ -473,13 +521,137 @@ function AdminDashboard() {
   );
 }
 
+function AdminTools() {
+  const { settings } = useSiteSettings();
+  const [copied, setCopied] = useState(false);
+
+  const exportSettings = () => {
+    const data = JSON.stringify(settings, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "astuceson-settings.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "✅ Exporté", description: "Les paramètres ont été téléchargés." });
+  };
+
+  const copySettings = () => {
+    navigator.clipboard.writeText(JSON.stringify(settings, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    toast({ title: "✅ Copié" });
+  };
+
+  const clearLocalStorage = () => {
+    if (confirm("Es-tu sûr ? Cela réinitialisera tous les paramètres.")) {
+      localStorage.removeItem("astuceson-settings");
+      window.location.reload();
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card className="border-border/30 bg-card/80">
+        <CardHeader>
+          <CardTitle className="font-display flex items-center gap-2"><Wrench className="h-5 w-5 text-neon-cyan" /> Outils</CardTitle>
+          <CardDescription>Outils de maintenance et de gestion</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <button
+              onClick={exportSettings}
+              className="p-5 rounded-xl border border-border/30 bg-muted/10 hover:bg-muted/20 transition-all text-left group"
+            >
+              <Download className="h-6 w-6 mb-2 text-neon-green group-hover:scale-110 transition-transform" />
+              <p className="font-display font-bold text-sm">Exporter les paramètres</p>
+              <p className="text-[11px] text-muted-foreground">Télécharge un fichier JSON</p>
+            </button>
+
+            <button
+              onClick={copySettings}
+              className="p-5 rounded-xl border border-border/30 bg-muted/10 hover:bg-muted/20 transition-all text-left group"
+            >
+              {copied ? <Check className="h-6 w-6 mb-2 text-neon-green" /> : <Copy className="h-6 w-6 mb-2 text-neon-cyan group-hover:scale-110 transition-transform" />}
+              <p className="font-display font-bold text-sm">{copied ? "Copié !" : "Copier les paramètres"}</p>
+              <p className="text-[11px] text-muted-foreground">Copie le JSON dans le presse-papier</p>
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-destructive/20 bg-card/80">
+        <CardHeader>
+          <CardTitle className="font-display flex items-center gap-2 text-destructive"><AlertTriangle className="h-5 w-5" /> Zone dangereuse</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <button
+            onClick={clearLocalStorage}
+            className="p-4 rounded-xl border border-destructive/30 bg-destructive/5 hover:bg-destructive/10 transition-all text-left w-full"
+          >
+            <p className="font-display font-bold text-sm text-destructive">Réinitialiser les paramètres</p>
+            <p className="text-[11px] text-muted-foreground">Supprime tous les paramètres locaux et recharge la page</p>
+          </button>
+        </CardContent>
+      </Card>
+
+      <Card className="border-border/30 bg-card/80">
+        <CardHeader>
+          <CardTitle className="font-display flex items-center gap-2"><Database className="h-5 w-5 text-neon-purple" /> Informations</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-xs text-muted-foreground">
+            <div className="flex justify-between py-2 border-b border-border/20">
+              <span>Stockage local</span>
+              <span className="font-mono text-foreground">{(JSON.stringify(settings).length / 1024).toFixed(1)} KB</span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-border/20">
+              <span>Nombre de paramètres</span>
+              <span className="font-mono text-foreground">{Object.keys(settings).length}</span>
+            </div>
+            <div className="flex justify-between py-2">
+              <span>Version</span>
+              <span className="font-mono text-foreground">1.0.0</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function DashboardOverview({ settings, onNavigate }: { settings: any; onNavigate: (s: AdminSection) => void }) {
-  const quickActions: { label: string; section: AdminSection; icon: any; color: string; desc: string }[] = [
-    { label: "Blog", section: "blog", icon: FileText, color: "from-neon-pink/10 to-neon-pink/5 border-neon-pink/20 hover:border-neon-pink/50", desc: "Gérer les articles" },
-    { label: "FAQ", section: "faq", icon: HelpCircle, color: "from-neon-cyan/10 to-neon-cyan/5 border-neon-cyan/20 hover:border-neon-cyan/50", desc: "Questions / réponses" },
-    { label: "Portfolio", section: "portfolio", icon: Film, color: "from-neon-purple/10 to-neon-purple/5 border-neon-purple/20 hover:border-neon-purple/50", desc: "Vidéos & contenus" },
-    { label: "Événements", section: "events", icon: CalendarDays, color: "from-neon-green/10 to-neon-green/5 border-neon-green/20 hover:border-neon-green/50", desc: "Lives & giveaways" },
-    { label: "Partenaires", section: "partners", icon: Handshake, color: "from-neon-orange/10 to-neon-orange/5 border-neon-orange/20 hover:border-neon-orange/50", desc: "Collaborations" },
+  const [counts, setCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const tables = ["blog_posts", "faq_items", "portfolio_items", "events", "partnerships", "contact_messages"];
+      const results: Record<string, number> = {};
+      await Promise.all(
+        tables.map(async (table) => {
+          try {
+            const { data } = await supabase.functions.invoke("admin-crud", {
+              body: { password: "astuceson2024", table, action: "count" },
+            });
+            results[table] = data?.count || 0;
+          } catch { results[table] = 0; }
+        })
+      );
+      setCounts(results);
+    };
+    fetchCounts();
+  }, []);
+
+  const quickActions: { label: string; section: AdminSection; icon: any; color: string; desc: string; count?: number }[] = [
+    { label: "Blog", section: "blog", icon: FileText, color: "from-neon-pink/10 to-neon-pink/5 border-neon-pink/20 hover:border-neon-pink/50", desc: "Gérer les articles", count: counts.blog_posts },
+    { label: "Messages", section: "messages", icon: MessageSquare, color: "from-neon-yellow/10 to-neon-yellow/5 border-neon-yellow/20 hover:border-neon-yellow/50", desc: "Messages reçus", count: counts.contact_messages },
+    { label: "FAQ", section: "faq", icon: HelpCircle, color: "from-neon-cyan/10 to-neon-cyan/5 border-neon-cyan/20 hover:border-neon-cyan/50", desc: "Questions / réponses", count: counts.faq_items },
+    { label: "Portfolio", section: "portfolio", icon: Film, color: "from-neon-purple/10 to-neon-purple/5 border-neon-purple/20 hover:border-neon-purple/50", desc: "Vidéos & contenus", count: counts.portfolio_items },
+    { label: "Événements", section: "events", icon: CalendarDays, color: "from-neon-green/10 to-neon-green/5 border-neon-green/20 hover:border-neon-green/50", desc: "Lives & giveaways", count: counts.events },
+    { label: "Partenaires", section: "partners", icon: Handshake, color: "from-neon-orange/10 to-neon-orange/5 border-neon-orange/20 hover:border-neon-orange/50", desc: "Collaborations", count: counts.partnerships },
+    { label: "Page d'accueil", section: "homepage", icon: Home, color: "from-neon-pink/10 to-neon-pink/5 border-neon-pink/20 hover:border-neon-pink/50", desc: "Sections & CTA" },
+    { label: "SEO", section: "seo", icon: Search, color: "from-neon-green/10 to-neon-green/5 border-neon-green/20 hover:border-neon-green/50", desc: "Référencement" },
     { label: "Réseaux", section: "links", icon: Link2, color: "from-neon-pink/10 to-neon-pink/5 border-neon-pink/20 hover:border-neon-pink/50", desc: "Liens sociaux" },
   ];
 
@@ -492,7 +664,6 @@ function DashboardOverview({ settings, onNavigate }: { settings: any; onNavigate
         </h2>
         <p className="text-muted-foreground text-sm">Bienvenue dans ton centre de commande. Gère tout depuis ici.</p>
 
-        {/* Status indicators */}
         <div className="flex flex-wrap gap-3 mt-5">
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${
             settings.maintenanceMode
@@ -506,6 +677,14 @@ function DashboardOverview({ settings, onNavigate }: { settings: any; onNavigate
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30">
               <Bell className="h-3 w-3" /> Annonce active
             </div>
+          )}
+          {(counts.contact_messages || 0) > 0 && (
+            <button
+              onClick={() => onNavigate("messages")}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-neon-pink/10 text-neon-pink border border-neon-pink/30 hover:bg-neon-pink/20 transition-colors"
+            >
+              <Mail className="h-3 w-3" /> {counts.contact_messages} message{(counts.contact_messages || 0) > 1 ? "s" : ""}
+            </button>
           )}
         </div>
       </div>
@@ -534,11 +713,16 @@ function DashboardOverview({ settings, onNavigate }: { settings: any; onNavigate
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(a.section)}
-              className={`p-5 rounded-xl bg-gradient-to-br ${a.color} border text-left transition-all group`}
+              className={`p-5 rounded-xl bg-gradient-to-br ${a.color} border text-left transition-all group relative`}
             >
               <a.icon className="h-6 w-6 mb-3 group-hover:scale-110 transition-transform" />
               <p className="font-display font-bold text-sm">{a.label}</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">{a.desc}</p>
+              {a.count !== undefined && (
+                <span className="absolute top-3 right-3 text-[10px] font-mono font-bold text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-full">
+                  {a.count}
+                </span>
+              )}
             </motion.button>
           ))}
         </div>
@@ -549,5 +733,5 @@ function DashboardOverview({ settings, onNavigate }: { settings: any; onNavigate
 
 export default function Admin() {
   const { isAdmin } = useSiteSettings();
-  return isAdmin ? <AdminDashboard /> : <LoginForm />;
+  return isAdmin ? <AdminPanel /> : <LoginForm />;
 }
