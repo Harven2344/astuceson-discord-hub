@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t border-border/30 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} {settings.siteName}. Tous droits réservés.</span>
+          <span>{settings.footerCopyright || `© ${new Date().getFullYear()} ${settings.siteName}. Tous droits réservés.`}</span>
           <span className="text-muted-foreground/50">{settings.contactEmail}</span>
         </div>
       </div>

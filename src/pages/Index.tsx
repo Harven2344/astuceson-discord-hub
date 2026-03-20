@@ -257,7 +257,7 @@ export default function Index() {
       </section>
       )}
 
-      {/* CTA — Big dramatic section */}
+      {settings.showHeroCTA && (
       <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div
@@ -286,14 +286,15 @@ export default function Index() {
             <p className="text-muted-foreground mb-10 max-w-lg mx-auto relative text-lg">
               Des milliers de personnes font déjà partie de la communauté {settings.siteName}. N'attends plus !
             </p>
-            <a href={settings.discordLink} target="_blank" rel="noopener noreferrer" className="relative">
+            <a href={settings.ctaButtonLink || settings.discordLink} target="_blank" rel="noopener noreferrer" className="relative">
               <Button size="lg" className="bg-discord hover:bg-discord/80 glow-discord font-display font-bold hover:scale-110 transition-all duration-300 text-lg px-12 py-7 gap-2 rounded-2xl">
-                🚀 Rejoindre maintenant <ArrowRight className="h-5 w-5" />
+                🚀 {settings.ctaButtonText || "Rejoindre maintenant"} <ArrowRight className="h-5 w-5" />
               </Button>
             </a>
           </motion.div>
         </div>
       </section>
+      )}
     </Layout>
   );
 }
