@@ -229,9 +229,9 @@ export default function Index() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { title: "Boutique", emoji: "🛍", desc: "Découvre le merch officiel", to: "/boutique", gradient: "from-neon-orange/15 to-neon-yellow/15", border: "border-neon-orange/20 hover:border-neon-orange/60" },
               { title: "Événements", emoji: "📅", desc: "Ne manque aucun event", to: "/evenements", gradient: "from-neon-green/15 to-neon-cyan/15", border: "border-neon-green/20 hover:border-neon-green/60" },
               { title: "Galerie", emoji: "🎬", desc: "Mes meilleurs contenus", to: "/galerie", gradient: "from-neon-pink/15 to-neon-purple/15", border: "border-neon-pink/20 hover:border-neon-pink/60" },
+              { title: "Partenariats", emoji: "🤝", desc: "Nos collaborations", to: "/partenariats", gradient: "from-neon-orange/15 to-neon-yellow/15", border: "border-neon-orange/20 hover:border-neon-orange/60" },
             ].map((item, i) => (
               <motion.div
                 key={item.to}
