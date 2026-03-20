@@ -179,7 +179,7 @@ export default function Index() {
       </section>
       )}
 
-      {/* FEATURES — Staggered asymmetric layout */}
+      {settings.showHeroFeatures && (
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-dots opacity-5" />
         <div className="container mx-auto px-4 relative">
@@ -216,6 +216,7 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
       {/* QUICK LINKS — Diagonal section */}
       <section className="py-28 relative">
