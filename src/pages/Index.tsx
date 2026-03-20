@@ -149,7 +149,7 @@ export default function Index() {
       </section>
       )}
 
-      {/* STATS — Bento grid */}
+      {settings.showHeroStats && (
       <section className="py-20 relative">
         <div className="container mx-auto px-4 relative">
           <motion.div
@@ -177,6 +177,7 @@ export default function Index() {
           </motion.div>
         </div>
       </section>
+      )}
 
       {/* FEATURES — Staggered asymmetric layout */}
       <section className="py-24 relative overflow-hidden">
