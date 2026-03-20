@@ -218,7 +218,7 @@ export default function Index() {
       </section>
       )}
 
-      {/* QUICK LINKS — Diagonal section */}
+      {settings.showHeroQuickLinks && (
       <section className="py-28 relative">
         <div className="absolute inset-0 skew-section bg-gradient-to-br from-neon-cyan/5 via-neon-purple/5 to-neon-pink/5" />
         <div className="container mx-auto px-4 relative z-10">
@@ -255,6 +255,7 @@ export default function Index() {
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA — Big dramatic section */}
       <section className="py-24">
