@@ -18,6 +18,28 @@ export interface SiteSettings {
   announcementText: string;
   announcementEnabled: boolean;
   maintenanceMode: boolean;
+  // SEO
+  seoTitle: string;
+  seoDescription: string;
+  seoOgImage: string;
+  seoKeywords: string;
+  // Footer
+  footerText: string;
+  footerCopyright: string;
+  // Homepage sections toggle
+  showHeroStats: boolean;
+  showHeroFeatures: boolean;
+  showHeroQuickLinks: boolean;
+  showHeroCTA: boolean;
+  showMarquee: boolean;
+  // Customization
+  ctaButtonText: string;
+  ctaButtonLink: string;
+  maintenanceMessage: string;
+  // Twitch
+  twitchLink: string;
+  // Thread / Bluesky
+  threadsLink: string;
 }
 
 const defaults: SiteSettings = {
@@ -38,6 +60,22 @@ const defaults: SiteSettings = {
   announcementText: "",
   announcementEnabled: false,
   maintenanceMode: false,
+  seoTitle: "Astuceson — Créateur TikTok",
+  seoDescription: "Découvre les meilleures astuces avec Astuceson, créateur TikTok. Rejoins la communauté !",
+  seoOgImage: "",
+  seoKeywords: "tiktok, astuceson, créateur, contenu, discord",
+  footerText: "",
+  footerCopyright: "",
+  showHeroStats: true,
+  showHeroFeatures: true,
+  showHeroQuickLinks: true,
+  showHeroCTA: true,
+  showMarquee: true,
+  ctaButtonText: "Rejoindre le Discord",
+  ctaButtonLink: "",
+  maintenanceMessage: "Le site est en maintenance. Revenez bientôt !",
+  twitchLink: "#",
+  threadsLink: "#",
 };
 
 interface Ctx {
