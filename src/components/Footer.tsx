@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <h3 className="font-display text-2xl font-black text-rainbow mb-3">{settings.siteName}</h3>
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">{settings.siteDescription}</p>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">{settings.footerText || settings.siteDescription}</p>
           </div>
           <div>
             <h4 className="font-display font-bold mb-4 text-foreground text-sm uppercase tracking-wider">Navigation</h4>
